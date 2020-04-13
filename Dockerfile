@@ -7,7 +7,7 @@ ARG VENDOR="unknown"
 # check if $ARCH has been set and fail early
 RUN if [ "$ARCH" == "unknown" ]; then echo " !!!! ERROR: please provide desired ARCH build argument"; exit 1; fi
 RUN if [ "$KERNEL" == "unknown" ]; then echo " #### Latest available kernel headers will be chosen"; fi
-RUN if [ "$VENDOR" == "unknown" ]; then ehco " #### 'unknown' toolchain vendor will be chosen"; fi
+RUN if [ "$VENDOR" == "unknown" ]; then echo " #### 'unknown' toolchain vendor will be chosen"; fi
 
 # name the portage image
 FROM gentoo/portage:latest as portage
