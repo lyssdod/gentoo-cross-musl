@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# Kernel make cross-toolchain wrapper
+#
+
+if [ "$ARCH" == "" ]; then echo "ERROR: ARCH is not defined"; exit 1; fi
+if [ "$SYSROOT" == "" ]; then echo "ERROR: SYSROOT is not defined"; exit 1; fi
+
+# fallback to default
+KERNEL_ARCH="$ARCH"
+
+# override for some
+case "$ARCH" in
+	aarch64)
+		KERNEL_ARCH="arm64"
+	;;
+esac
+
+exec make ARCH="$KERNEL_ARCH" CROSS_COMPILE="$ARCH-unknown-linux-musl-" INSTALL_MOD_PATH="${SYSROOT}" "$@"

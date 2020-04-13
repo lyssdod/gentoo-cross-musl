@@ -1,0 +1,23 @@
+#!/bin/sh
+#
+# This script will apply some arch-specific crossdev quirks
+#
+
+ARGS=""
+
+if [ "$ARCH" == "" ]; then echo "ERROR: ARCH is not defined"; exit 1; fi
+
+echo "Applying $ARCH-specific quirks"
+
+case "$ARCH" in
+	powerpc)
+		echo "cross-$ARCH-$VENDOR-linux-musl/gcc -ssp" >> /etc/portage/package.use/crossdev
+		echo "cross-$ARCH-$VENDOR-linux-musl/gcc disable-libatomic.conf" >> /etc/portage/package.env/crossdev
+		echo 'EXTRA_ECONF="--disable-libatomic"' >> /etc/portage/env/disable-libatomic.conf
+	;;
+esac
+
+# check for KERNEL
+[ "$KERNEL" = "" ] && ARGS="$ARGS --k $KERNEL"
+
+exec crossdev "$ARGS" "$ARCH-$VENDOR-linux-musl"
